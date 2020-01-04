@@ -11,10 +11,12 @@ const vm = new Vue({
         page: 1,
         perPage: 3,
         pages: [],
+        filteredJobs: [], // needed to create updated pagination when filters are active
     },
     methods: {
       setPages() {
-        let numberOfPages = Math.ceil(this.jobs.length / this.perPage);
+        let numberOfPages = Math.ceil(this.filteredJobs.length / this.perPage);
+        this.pages = []; // set array to empty to recalculate
         for(let index = 1; index <= numberOfPages; index++) {
           this.pages.push(index);
         }
@@ -29,12 +31,12 @@ const vm = new Vue({
     },
     computed: {
     	filteredByAll() {
-        return this.paginate(getByLocation(getByCategory(getByKeyword(this.jobs, this.keyword), this.category), this.location))
-        // return this.paginate(this.jobs);
+        this.filteredJobs = getByLocation(getByCategory(getByKeyword(this.jobs, this.keyword), this.category), this.location);
+        return this.paginate(this.filteredJobs)
       },
     },
     watch: {
-      jobs() {
+      filteredByAll() {
         this.setPages();
       }
     },
@@ -43,7 +45,7 @@ const vm = new Vue({
         .then((response) => response.json())
         .then(data => {
           // add jobs to array
-          this.jobs = data; 
+          this.jobs = data;
 
           // add job categories to array
           this.jobs.map((job) => {
@@ -60,7 +62,6 @@ const vm = new Vue({
               this.locations.push(job.location);
             }
           });
-
         });
     }
 });

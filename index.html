@@ -35,7 +35,7 @@
                 <div class="col">
 
                     <!-- Count -->
-                    <!-- <p>Showing <strong>{{ filteredByAll.length }}</strong> of {{ jobs.length }} results</p> -->
+                    <p>Showing <strong>{{ filteredJobs.length }}</strong> of {{ jobs.length }} results</p>
 
                     <!-- Table -->
                     <table class="table">
@@ -62,10 +62,13 @@
                         </tr>
                     </table>
 
-                    {{ pages.length }}
+                    <hr>
+                    <strong>Pages: {{ pages.length }}</strong>
+                    <hr>
 
                     <!-- Pagination -->
-                    <nav aria-label="Pagination">
+                    <!-- <nav aria-label="Pagination" v-if="!keyword && !category && !location"> -->
+                    <nav>
                         <ul class="pagination">
                             <!-- <li class="page-item">
                                 <button class="page-link" aria-label="Previous" @click="page--" v-if="page != 1">
