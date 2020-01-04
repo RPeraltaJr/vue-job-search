@@ -1,24 +1,42 @@
 const vm = new Vue({
     el: '#root',
     data: {       
-        jobs: [],
+        jobs: [''],
         categories: [],
         locations: [],
         keyword: '',
         category: '',
-        location: ''
+        location: '',
+
+        page: 1,
+        perPage: 3,
+        pages: [],
     },
-    
+    methods: {
+      setPages() {
+        let numberOfPages = Math.ceil(this.jobs.length / this.perPage);
+        for(let index = 1; index <= numberOfPages; index++) {
+          this.pages.push(index);
+        }
+      },
+      paginate(jobs) {
+        let page = this.page;
+        let perPage = this.perPage;
+        let from = (page * perPage) - perPage;
+        let to = (page * perPage);
+        return jobs.slice(from, to);
+      }
+    },
     computed: {
     	filteredByAll() {
-      	return getByLocation(getByCategory(getByKeyword(this.jobs, this.keyword), this.category), this.location)
+        return this.paginate(getByLocation(getByCategory(getByKeyword(this.jobs, this.keyword), this.category), this.location))
+        // return this.paginate(this.jobs);
       },
-      // filteredByKeyword() {
-	    //   return getByKeyword(this.jobs, this.keyword)
-      // },
-      // filteredByCategory() {
-	    //   return getByCategory(this.list, this.category)
-      // }
+    },
+    watch: {
+      jobs() {
+        this.setPages();
+      }
     },
     created() {
       fetch('https://my-json-server.typicode.com/RPeraltaJr/jobs-api/results')
@@ -43,7 +61,7 @@ const vm = new Vue({
             }
           });
 
-        })
+        });
     }
 });
 
