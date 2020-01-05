@@ -9,7 +9,7 @@ const vm = new Vue({
         location: '',
 
         page: 1,
-        perPage: 3,
+        perPage: 10,
         pages: [],
         filteredJobs: [], // needed to create updated pagination when filters are active
     },
