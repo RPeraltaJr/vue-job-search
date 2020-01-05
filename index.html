@@ -35,7 +35,14 @@
                 <div class="col">
 
                     <!-- Count -->
-                    <p>Showing <strong>{{ filteredJobs.length }}</strong> of {{ jobs.length }} results</p>
+                    <p>
+                        Showing 
+                        {{ filteredJobs.length == 0 ? '0' : (page * perPage) - perPage + 1 }}
+                        to
+                        {{ pages.length > 1 && (page * perPage) < filteredJobs.length ? (page * perPage) : filteredJobs.length }}
+                        of {{ filteredJobs.length }} results
+                        {{ jobs.length != filteredJobs.length ? '(filtered from ' + jobs.length + ' total entries)'  : '' }}
+                    </p>
 
                     <!-- Table -->
                     <table class="table">
@@ -62,13 +69,8 @@
                         </tr>
                     </table>
 
-                    <hr>
-                    <strong>Pages: {{ pages.length }}</strong>
-                    <hr>
-
                     <!-- Pagination -->
-                    <!-- <nav aria-label="Pagination" v-if="!keyword && !category && !location"> -->
-                    <nav>
+                    <nav aria-label="Pagination">
                         <ul class="pagination">
                             <!-- <li class="page-item">
                                 <button class="page-link" aria-label="Previous" @click="page--" v-if="page != 1">

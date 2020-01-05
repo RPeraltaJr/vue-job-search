@@ -1,7 +1,7 @@
 const vm = new Vue({
     el: '#root',
     data: {       
-        jobs: [''],
+        jobs: [],
         categories: [],
         locations: [],
         keyword: '',
