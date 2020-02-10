@@ -20,16 +20,16 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <input v-model="keyword" class="form-control" placeholder="Search by id or title">
+                    <input v-model="keyword" class="form-control" placeholder="Search by id or title" @keypress="resetPagination">
                 </div>
                 <div class="col">
-                    <select v-model="category" class="form-control">
+                    <select v-model="category" class="form-control" @change="resetPagination">
                         <option value="">Search by category</option>
                         <option v-for="cat in categories" :value="cat">{{ cat }}</option>
                     </select>
                 </div>
                 <div class="col">
-                    <select v-model="location" class="form-control">
+                    <select v-model="location" class="form-control" @change="resetPagination">
                         <option value="">Search by location</option>
                         <option v-for="loc in locations" :value="loc">{{ loc }}</option>
                     </select>

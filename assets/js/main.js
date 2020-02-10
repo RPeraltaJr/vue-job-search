@@ -7,13 +7,14 @@ const vm = new Vue({
         keyword: '',
         category: '',
         location: '',
-        displayNumber: 0,
-        interval: false,
 
         page: 1,
         perPage: 10,
         pages: [],
         filteredJobs: [], // needed to create updated pagination when filters are active
+
+        displayNumber: 0,
+        interval: false,
     },
     methods: {
       setPages() {
@@ -29,6 +30,9 @@ const vm = new Vue({
         let from = (page * perPage) - perPage;
         let to = (page * perPage);
         return jobs.slice(from, to);
+      },
+      resetPagination() {
+        this.page = 1; 
       }
     },
     computed: {
