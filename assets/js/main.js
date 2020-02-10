@@ -7,6 +7,8 @@ const vm = new Vue({
         keyword: '',
         category: '',
         location: '',
+        displayNumber: 0,
+        interval: false,
 
         page: 1,
         perPage: 10,
@@ -34,11 +36,26 @@ const vm = new Vue({
         this.filteredJobs = getByLocation(getByCategory(getByKeyword(this.jobs, this.keyword), this.category), this.location);
         return this.paginate(this.filteredJobs)
       },
+      number(){
+        clearInterval(this.interval);
+          if(this.filteredJobs.length == this.displayNumber){
+            return; 
+          }
+          this.interval = window.setInterval(function(){
+            if(this.displayNumber != this.filteredJobs.length){
+              let change = (this.filteredJobs.length - this.displayNumber) / 10;
+              change = change >= 0 ? Math.ceil(change) : Math.floor(change);
+              this.displayNumber = this.displayNumber + change;
+            }
+          }.bind(this), 20);
+      }
     },
     watch: {
       filteredByAll() {
         this.setPages();
-      }
+        this.number();
+        this.displayNumber = this.filteredJobs.length ? this.filteredJobs.length : 0;
+      },
     },
     created() {
       fetch('https://my-json-server.typicode.com/RPeraltaJr/jobs-api/results')
