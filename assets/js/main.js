@@ -62,7 +62,9 @@ const vm = new Vue({
       },
     },
     created() {
-      fetch('https://my-json-server.typicode.com/RPeraltaJr/jobs-api/results')
+      // const url = "https://my-json-server.typicode.com/RPeraltaJr/jobs-api/results";
+      const url = "./data/jobs.json";
+      fetch(url)
         .then((response) => response.json())
         .then(data => {
           // add jobs to array
