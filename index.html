@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <input v-model="keyword" class="form-control" placeholder="Search by id or title" @keypress="resetPagination">
+                    <input type="search" v-model="keyword" class="form-control" placeholder="Search by id or title" @keypress="resetPagination">
                 </div>
                 <div class="col">
                     <select v-model="category" class="form-control" @change="resetPagination">
