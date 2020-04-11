@@ -7,7 +7,7 @@ const vm = new Vue({
         keyword: '',
         category: '',
         location: '',
-
+ 
         page: 1,
         perPage: 10,
         pages: [],
@@ -38,7 +38,7 @@ const vm = new Vue({
     computed: {
     	filteredByAll() {
         this.filteredJobs = getByLocation(getByCategory(getByKeyword(this.jobs, this.keyword), this.category), this.location);
-        return this.paginate(this.filteredJobs)
+        return this.paginate(this.filteredJobs);
       },
       number(){
         clearInterval(this.interval);
@@ -62,15 +62,15 @@ const vm = new Vue({
       },
     },
     created() {
-      // const url = "https://my-json-server.typicode.com/RPeraltaJr/jobs-api/results";
       const url = "./data/jobs.json";
       fetch(url)
         .then((response) => response.json())
         .then(data => {
-          // add jobs to array
+
+          // * add jobs to array
           this.jobs = data;
 
-          // add job categories to array
+          // * get unique categories into array
           this.jobs.map((job) => {
             // add category if it doesn't exist in array
             if(this.categories.indexOf(job.category) === -1) {
@@ -78,17 +78,41 @@ const vm = new Vue({
             }
           });
 
-          // add job locations to array
+          // * get unique locations into array
           this.jobs.map((job) => {
             // add location if it doesn't exist in array
             if(this.locations.indexOf(job.location) === -1) {
               this.locations.push(job.location);
             }
           });
+
         });
+
+        // * predefined links
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        // * keyword
+        if(urlParams.get('q')) {
+          const keywordParam = urlParams.get('q')
+          this.keyword = keywordParam;
+        }
+
+        // * category
+        if(urlParams.get('category')) {
+          const categoryParam = urlParams.get('category')
+          this.category = categoryParam;
+        }
+
+        // * location
+        if(urlParams.get('location')) {
+          const locationParam = urlParams.get('location')
+          this.location = locationParam;
+        }
     }
 });
 
+// * filter by keyword
 function getByKeyword(list, keyword) {
   const search = keyword.trim().toLowerCase()
   if (!search.length) return list
@@ -96,11 +120,13 @@ function getByKeyword(list, keyword) {
   return list.filter(item => item.title.toLowerCase().indexOf(search) > -1 || item.id == search)
 }
 
+// * filter by category
 function getByCategory(list, category) {
   if (!category) return list
   return list.filter(item => item.category === category)
 }
 
+// * filter by location
 function getByLocation(list, location) {
   if (!location) return list
   return list.filter(item => item.location === location)
